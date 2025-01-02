@@ -25,6 +25,7 @@ function Write-OutputFile {
 }
 
 # Inizio script
+Write-OutputFile "Data: $Data"
 Write-OutputFile "Audit punti CIS IIS per Windows"
 Write-OutputFile "Versione 0.1"
 
