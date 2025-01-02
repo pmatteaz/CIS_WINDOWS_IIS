@@ -1,8 +1,8 @@
-# 1.07 
-
+# 1.07 Ensure' WebDav' feature is disabled
+Uninstall-WindowsFeature Web-DAV-Publishing
 ##F
 #2.3
-Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST/Default Web Site' -filter 'system.web/authentication/forms' -name 'requireSSL' -value 'True'
+Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST/Default Web Site' -filter 'system.web/authentication/forms' -name 'requireSSL' -value $true
 ##F
 #2.4
 Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST/Default Web Site' -filter 'system.web/authentication/forms' -name 'cookieless' -value 'UseCookies'
@@ -17,7 +17,7 @@ Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST/<website name>' -f
 Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT' -filter "system.web/trust" -name "level" -value "Medium"
 ##F
 # 3.12 
-
+Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST/' -filter "system.webServer/security/requestFiltering" -name "removeServerHeader" -value $true
 ##F
 # 4.01  Ensure 'maxAllowedContentLength' is configured
 Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/requestLimits" -name "maxAllowedContentLength" -value 30000000
@@ -29,7 +29,7 @@ Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.w
 Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/requestLimits" -name "maxQueryString" -value 2048
 ##F
 # 4.04 Ensure non-ASCII characters in URLs are not allowed
-Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering" -name "allowHighBitCharacters" -value "False"
+Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering" -name "allowHighBitCharacters" -value $false
 ##F
 # 4.05 Ensure Double-Encoded requests will be rejected
 Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering" -name "allowDoubleEscaping" -value $true
