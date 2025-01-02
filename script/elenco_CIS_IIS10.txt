@@ -1,56 +1,56 @@
-# 1.07 Ensure' WebDav' feature is disabled
+#D# 1.07 Ensure' WebDav' feature is disabled
 #C# Get-WebConfiguration system.webServer/security/authentication/* -Recurse | Where-Object {$_.enabled -eq $true} | Format-Table
 #R# Uninstall-WindowsFeature Web-DAV-Publishing
 ##F
-# 2.3 Ensure 'forms authentication' require SSL
+#D# 2.3 Ensure 'forms authentication' require SSL
 #C# Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST/Default Web Site' -filter 'system.web/authentication/forms' -name 'requireSSL' | Format-Table Name, Value
 #R# Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST/Default Web Site' -filter 'system.web/authentication/forms' -name 'requireSSL' -value $true
 ##F
-# 2.4 Ensure 'forms authentication' is set to use cookies
+#D# 2.4 Ensure 'forms authentication' is set to use cookies
 #C# Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST/Default Web Site' -filter 'system.web/authentication/forms' -Recurse -name 'cookieless'
 #R# Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST/Default Web Site' -filter 'system.web/authentication/forms' -name 'cookieless' -value 'UseCookies'
 ##F
-# 2.5 Ensure 'cookie protection mode' is configured for forms authentication
+#D# 2.5 Ensure 'cookie protection mode' is configured for forms authentication
 #C# Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST/<website name>' -filter 'system.web/authentication/forms' -name 'protection'
 #R# Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST/' -filter 'system.web/authentication/forms' -name 'protection' -value 'All'
 ##F
-# 3.6 Ensure 'httpcookie' mode is configured for session state 
+#D# 3.6 Ensure 'httpcookie' mode is configured for session state 
 #C# Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST/<website name>' -filter "system.web/sessionState" -name "mode" 
 #R# Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST/<website name>' -filter "system.web/sessionState" -name "mode" -value "StateServer"
 ##F
-# 3.10 Ensure global .NET trust level is configured
+#D# 3.10 Ensure global .NET trust level is configured
 #C# Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT' -filter "system.web/trust" -name "level"
 #R# Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT' -filter "system.web/trust" -name "level" -value "Medium"
 ##F
-# 3.12 Ensure Server Header is removed
+#D# 3.12 Ensure Server Header is removed
 #C# Get-WebConfigurationProperty -pspath machine/webroot/apphost -filter 'system.webserver/security/requestfiltering ' -name 'removeServerHeader' 
 #R# Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST/' -filter "system.webServer/security/requestFiltering" -name "removeServerHeader" -value $true
 ##F
-# 4.01  Ensure 'maxAllowedContentLength' is configured
+#D# 4.01  Ensure 'maxAllowedContentLength' is configured
 #C# Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/requestLimits" -name "maxAllowedContentLength"
 #R# Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/requestLimits" -name "maxAllowedContentLength" -value 30000000
 ##F
-# 4.02 The MaxURL Request Filter 
+#D# 4.02 The MaxURL Request Filter 
 #C# Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/requestLimits" -name "maxUrl"
 #R# Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/requestLimits" -name "maxUrl" -value 4096
 ##F
-# 4.03 The MaxQueryString
+#D# 4.03 The MaxQueryString
 #C# Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/requestLimits" -name "maxQueryString"
 #R# Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/requestLimits" -name "maxQueryString" -value 2048
 ##F
-# 4.04 Ensure non-ASCII characters in URLs are not allowed
+#D# 4.04 Ensure non-ASCII characters in URLs are not allowed
 #C# Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter 'system.webServer/security/requestFiltering' -name 'allowHighBitCharacters'
 #R# Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering" -name "allowHighBitCharacters" -value $false
 ##F
-# 4.05 Ensure Double-Encoded requests will be rejected
+#D# 4.05 Ensure Double-Encoded requests will be rejected
 #C# Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering" -name "allowDoubleEscaping"
 #R# Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering" -name "allowDoubleEscaping" -value $true
 ##F
-# 4.07 Ensure Unlisted File Extensions are not allowed
+#D# 4.07 Ensure Unlisted File Extensions are not allowed
 #C# Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/fileExtensions" -name "allowUnlisted"
 #R# Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/fileExtensions" -name "allowUnlisted" -value $false
 ##F
-# 7.05 Ensure TLS 1.1 is Disabled 
+#D# 7.05 Ensure TLS 1.1 is Disabled 
 #C# Get-ItemProperty -path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocol s\TLS 1.1\Server' -name 'Enabled' 
 #C# Get-ItemProperty -path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocol s\TLS 1.1\Client' -name 'Enabled' 
 #C# Get-ItemProperty -path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocol s\TLS 1.1\Server' -name 'DisabledByDefault' 
@@ -62,7 +62,7 @@
 #R# New-ItemProperty -path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server' -name 'DisabledByDefault' -value '1' -PropertyType 'DWord' -Force | Out-Null
 #R# New-ItemProperty -path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client' -name 'DisabledByDefault' -value '1' -PropertyType 'DWord' -Force | Out-Null
 ##F
-# 7.14 Ensure TLS Cipher Suite ordering is configured
+#D# 7.14 Ensure TLS Cipher Suite ordering is configured
 #C# Get-ItemProperty -path 'HKLM:\SOFTWARE\Policies\Microsoft\Cryptography\Configuration\SSL\00010002' -name 'Functions'
 #R# New-Item 'HKLM:\SOFTWARE\Policies\Microsoft\Cryptography\Configuration\SSL\00010002' -Force | Out-Null
 #R# New-ItemProperty -path 'HKLM:\SOFTWARE\Policies\Microsoft\Cryptography\Configuration\SSL\00010002' -name 'Functions' -value 'TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256' -PropertyType 'MultiString' -Force | Out-Null
