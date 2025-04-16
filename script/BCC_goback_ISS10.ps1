@@ -81,6 +81,30 @@ function Rollback-Activity {
             }
         }
 
+                # Rollback per 03.06
+                "3.06" {
+                    $backupFile = Join-Path $backupDir "Backup_3.06.txt"
+                    if (Test-Path $backupFile) {
+                        $previousValue = Get-Content -Path $backupFile
+                        Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST/' -filter "system.web/sessionState" -name "mode" -value $previousValue
+                        Write-Log "Rolled back #3.06"
+                    } else {
+                        Write-Log "Backup file for #3.06 not found"
+                    }
+                }
+        
+                # Rollback per 03.12
+                "3.12" {
+                    $backupFile = Join-Path $backupDir "Backup_3.12.txt"
+                    if (Test-Path $backupFile) {
+                        $previousValue = Get-Content -Path $backupFile
+                        Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter 'system.webserver/security/requestfiltering' -name 'removeServerHeader' -value $previousValue
+                        Write-Log "Rolled back #3.12"
+                    } else {
+                        Write-Log "Backup file for #3.12 not found"
+                    }
+                }
+        
         # Rollback per 07.05
         "7.05" {
             $backupFileServer = Join-Path $backupDir "Backup_7.05_Server.txt"
