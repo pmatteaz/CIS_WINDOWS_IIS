@@ -54,6 +54,33 @@ function Rollback-Activity {
             }
         }
 
+        # Rollback per 02.04
+        "2.04" {
+            $sites = Get-IISSite | Where-Object { $_.Bindings.Protocol -ne 'ftp' } | Select-Object -ExpandProperty Name
+            foreach ($site in $sites) {
+                $backupFile = Join-Path $backupDir "Backup_2.04_$site.txt"
+                if (Test-Path $backupFile) {
+                    $previousValue = Get-Content -Path $backupFile
+                    Set-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST/$site" -filter 'system.web/authentication/forms' -name 'cookieless' -value $previousValue
+                    Write-Log "Rolled back #2.04 for site: $site"
+                } else {
+                    Write-Log "Backup file for #2.04 (site: $site) not found"
+                }
+            }
+        }
+
+        # Rollback per 02.05
+        "2.05" {
+            $backupFile = Join-Path $backupDir "Backup_2.05.txt"
+            if (Test-Path $backupFile) {
+                $previousValue = Get-Content -Path $backupFile
+                Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST/' -filter 'system.web/authentication/forms' -name 'protection' -value $previousValue
+                Write-Log "Rolled back #2.05"
+            } else {
+                Write-Log "Backup file for #2.05 not found"
+            }
+        }
+
         # Rollback per 07.05
         "7.05" {
             $backupFileServer = Join-Path $backupDir "Backup_7.05_Server.txt"
