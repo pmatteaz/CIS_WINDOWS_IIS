@@ -14,7 +14,7 @@ Get-WindowsFeature Web-DAV-Publishing | Out-File -FilePath C:\Temp\Hardening.log
 pause
 
 # Get all site in IIS
-$sites=Get-IISSite |select name | ForEach-Object {$_.Name}
+$sites = Get-IISSite | Where-Object { $_.Bindings.Protocol -ne 'ftp' } | Select-Object -ExpandProperty Name
 
 # 02.03
 foreach ($site in $sites) {
@@ -42,7 +42,7 @@ foreach ($site in $sites) {
 
     $currentValue = Get-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST/$site" -filter 'system.web/authentication/forms' -name 'cookieless'
 
-    if ($currentValue.Value -ne 'UseCookies') {
+    if ($currentValue -ne 'UseCookies') {
         Set-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST/$site" -filter 'system.web/authentication/forms' -name 'cookieless' -value 'UseCookies'
         Write-output "#2.04 Hardened" | Out-File -FilePath C:\Temp\Hardening.log -append
     } else {
@@ -58,7 +58,7 @@ pause
 Write-output "#2.05" | Out-File -FilePath C:\Temp\Hardening.log -append
 $currentValue = Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST/' -filter 'system.web/authentication/forms' -name 'protection'
 
-if ($currentValue.Value -ne 'All') {
+if ($currentValue -ne 'All') {
     Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter 'system.web/authentication/forms' -name 'protection' -value 'All'
     Write-output "#2.05 Hardened" | Out-File -FilePath C:\Temp\Hardening.log -append
 } else {
@@ -72,7 +72,7 @@ pause
 Write-output "#3.06" | Out-File -FilePath C:\Temp\Hardening.log -append
 $currentValue = Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST/' -filter "system.web/sessionState" -name "mode"
 
-if ($currentValue.Value -ne 'StateServer') {
+if ($currentValue -ne 'InProc') {
     Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.web/sessionState" -name "mode" -value StateServer
     Write-output "#3.06 Hardened" | Out-File -FilePath C:\Temp\Hardening.log -append
 } else {
