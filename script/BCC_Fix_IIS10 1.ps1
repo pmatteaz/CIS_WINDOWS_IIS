@@ -1,8 +1,15 @@
 # 01.07
 Write-output "#1.07" | Out-File -FilePath C:\Temp\Hardening.log
-Get-WindowsFeature Web-DAV-Publishing | Out-File -FilePath C:\Temp\Hardening.log -append
-Remove-WindowsFeature Web-DAV-Publishing
-Write-output "#1.07 Hardened" | Out-File -FilePath C:\Temp\Hardening.log -append
+
+$currentValue = Get-WindowsFeature Web-DAV-Publishing
+
+if ($currentValue.Installed -eq $true) {
+    Remove-WindowsFeature Web-DAV-Publishing
+    Write-output "#1.07 Hardened" | Out-File -FilePath C:\Temp\Hardening.log -append
+} else {
+    Write-output "#1.07 Already Hardened" | Out-File -FilePath C:\Temp\Hardening.log -append
+}
+
 Get-WindowsFeature Web-DAV-Publishing | Out-File -FilePath C:\Temp\Hardening.log -append
 pause
 
