@@ -25,7 +25,7 @@ if ($currentValue.Installed -eq $true) {
 Get-WindowsFeature Web-DAV-Publishing | Out-File -FilePath C:\Temp\Hardening.log -Append
 Write-Log "Finished #1.07"
 Write-Log "----------------------------------------"
-pause
+
 
 # Get all site in IIS
 $sites = Get-IISSite | Where-Object { $_.Bindings.Protocol -ne 'ftp' } | Select-Object -ExpandProperty Name
@@ -50,7 +50,7 @@ foreach ($site in $sites) {
     Write-Log "Finished #2.03 for site: $site"
     Write-Log "----------------------------------------"
 }
-pause
+
 
 # 02.04
 foreach ($site in $sites) {
@@ -72,7 +72,7 @@ foreach ($site in $sites) {
     Write-Log "Finished #2.04 for site: $site"
     Write-Log "----------------------------------------"
 }
-pause
+
 
 # 02.05
 Write-Log "Starting #2.05"
@@ -92,7 +92,7 @@ if ($currentValue.Value -ne 'All') {
 Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST/' -filter 'system.web/authentication/forms' -name 'protection' | Out-File -FilePath C:\Temp\Hardening.log -Append
 Write-Log "Finished #2.05"
 Write-Log "----------------------------------------"
-pause
+
 
 # 03.06
 Write-Log "Starting #3.06"
@@ -112,7 +112,7 @@ if ($currentValue.Value -ne 'InProc') {
 Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST/' -filter "system.web/sessionState" -name "mode" | Out-File -FilePath C:\Temp\Hardening.log -Append
 Write-Log "Finished #3.06"
 Write-Log "----------------------------------------"
-pause
+
 
 # 03.12
 Write-Log "Starting #3.12"
@@ -132,7 +132,7 @@ if ($currentValue.Value -ne $true) {
 Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter 'system.webserver/security/requestfiltering' -name 'removeServerHeader' | Format-Table Name, Value | Out-File -FilePath C:\Temp\Hardening.log -Append
 Write-Log "Finished #3.12"
 Write-Log "----------------------------------------"
-pause
+
 
 # 04.01
 Write-Log "Starting #4.01"
@@ -152,7 +152,7 @@ if ($currentValue.Value -ne 30000000) {
 Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/requestLimits" -name "maxAllowedContentLength" | Format-Table Name, Value | Out-File -FilePath C:\Temp\Hardening.log -Append
 Write-Log "Finished #4.01"
 Write-Log "----------------------------------------"
-pause
+
 
 # 04.02
 Write-Log "Starting #4.02"
@@ -172,7 +172,7 @@ if ($currentValue.Value -ne 4096) {
 Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/requestLimits" -name "maxUrl" | Format-Table Name, Value | Out-File -FilePath C:\Temp\Hardening.log -Append
 Write-Log "Finished #4.02"
 Write-Log "----------------------------------------"
-pause
+
 
 # 04.03
 Write-Log "Starting #4.03"
@@ -192,7 +192,7 @@ if ($currentValue.Value -ne 2048) {
 Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/requestLimits" -name "maxQueryString" | Format-Table Name, Value | Out-File -FilePath C:\Temp\Hardening.log -Append
 Write-Log "Finished #4.03"
 Write-Log "----------------------------------------"
-pause
+
 
 # 04.04
 Write-Log "Starting #4.04"
@@ -212,7 +212,7 @@ if ($currentValue.Value -ne $false) {
 Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter 'system.webServer/security/requestFiltering' -name 'allowHighBitCharacters' | Format-Table Name, Value | Out-File -FilePath C:\Temp\Hardening.log -Append
 Write-Log "Finished #4.04"
 Write-Log "----------------------------------------"
-pause
+
 
 # 04.05
 Write-Log "Starting #4.05"
@@ -232,7 +232,7 @@ if ($currentValue.Value -ne $false) {
 Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering" -name "allowDoubleEscaping" | Format-Table Name, Value | Out-File -FilePath C:\Temp\Hardening.log -Append
 Write-Log "Finished #4.05"
 Write-Log "----------------------------------------"
-pause
+
 
 # 07.05
 Write-Log "Starting #7.05"
@@ -279,7 +279,7 @@ if ($currentValueClientEnabled.Enabled -ne 0 -or $currentValueClientDisabledByDe
 
 Write-Log "Finished #7.05"
 Write-Log "----------------------------------------"
-pause
+
 
 # 07.12
 Write-Log "Starting #7.12"
@@ -299,4 +299,3 @@ if ($null -eq $currentValue.Functions -or $currentValue.Functions -ne 'TLS_ECDHE
 
 Write-Log "Finished #7.12"
 Write-Log "----------------------------------------"
-pause
