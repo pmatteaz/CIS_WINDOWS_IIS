@@ -1,3 +1,27 @@
+# Assicurati di eseguire questo script con i privilegi di amministratore
+# e di avere i permessi necessari per modificare le configurazioni di IIS e il registro di sistema.
+# Inoltre, verifica che i file di backup siano presenti nella directory specificata
+#
+# Per eseguire lo script, apri PowerShell come amministratore e utilizza il comando:
+# .\BCC_goback_ISS10.ps1 -ActivityCode "codice_attività"    
+# Dove "codice_attività" è il codice dell'attività che desideri ripristinare (es. "1.07", "2.03", ecc.)
+# Esempio di esecuzione:    
+# .\BCC_goback_ISS10.ps1 -ActivityCode "1.07"
+#Codici attività supportati:
+#1.07 : Ripristina la funzionalità `Web-DAV-Publishing`.
+#2.03 : Ripristina la configurazione `requireSSL` per i siti IIS.
+#2.04 : Ripristina la configurazione `cookieless` per i siti IIS.
+#2.05 : Ripristina la configurazione `protection`.
+#3.06 : Ripristina la configurazione `mode` per `system.web/sessionState`.
+#3.12 : Ripristina la configurazione `removeServerHeader`.
+#4.01 : Ripristina il valore di `maxAllowedContentLength`.
+#4.02 : Ripristina il valore di `maxUrl`.
+#4.03 : Ripristina il valore di `maxQueryString`.
+#4.04 : Ripristina il valore di `allowHighBitCharacters`.
+#4.05 : Ripristina il valore di `allowDoubleEscaping`.
+#7.05 : Ripristina le configurazioni TLS 1.1 per Server e Client.
+#7.12 : Ripristina le funzioni SSL.
+#
 param (
     [string]$ActivityCode
 )
@@ -213,3 +237,5 @@ function Rollback-Activity {
 
 # Esegui il rollback per il codice attività specificato
 Rollback-Activity -ActivityCode $ActivityCode
+
+### Fine dello script
