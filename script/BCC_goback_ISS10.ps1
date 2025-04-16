@@ -5,9 +5,8 @@
 # Per eseguire lo script, apri PowerShell come amministratore e utilizza il comando:
 # .\BCC_goback_ISS10.ps1 -ActivityCode "codice_attività"    
 # Dove "codice_attività" è il codice dell'attività che desideri ripristinare (es. "1.07", "2.03", ecc.)
-# Esempio di esecuzione:    
-# .\BCC_goback_ISS10.ps1 -ActivityCode "1.07"
-#Codici attività supportati:
+# Esempio di esecuzione:  .\BCC_goback_ISS10.ps1 -ActivityCode "1.07"
+# Codici attività supportati:
 #1.07 : Ripristina la funzionalità `Web-DAV-Publishing`.
 #2.03 : Ripristina la configurazione `requireSSL` per i siti IIS.
 #2.04 : Ripristina la configurazione `cookieless` per i siti IIS.
