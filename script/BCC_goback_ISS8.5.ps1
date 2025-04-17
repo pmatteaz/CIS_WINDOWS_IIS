@@ -77,18 +77,6 @@ function Rollback-Activity {
             }
         }
 
-        # Rollback per 03.12
-        "3.12" {
-            $backupFile = Join-Path $backupDir "Backup_3.12.txt"
-            if (Test-Path $backupFile) {
-                $previousValue = Get-Content -Path $backupFile
-                Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter 'system.webserver/security/requestfiltering' -name 'removeServerHeader' -value $previousValue
-                Write-Log "Rolled back #3.12"
-            } else {
-                Write-Log "Backup file for #3.12 not found"
-            }
-        }
-
         # Rollback per 04.01
         "4.01" {
             $backupFile = Join-Path $backupDir "Backup_4.01.txt"
@@ -98,6 +86,54 @@ function Rollback-Activity {
                 Write-Log "Rolled back #4.01"
             } else {
                 Write-Log "Backup file for #4.01 not found"
+            }
+        }
+
+        # Rollback per 04.02
+        "4.02" {
+            $backupFile = Join-Path $backupDir "Backup_4.02.txt"
+            if (Test-Path $backupFile) {
+                $previousValue = Get-Content -Path $backupFile
+                Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/requestLimits" -name "maxUrl" -value $previousValue
+                Write-Log "Rolled back #4.02"
+            } else {
+                Write-Log "Backup file for #4.02 not found"
+            }
+        }
+
+        # Rollback per 04.03
+        "4.03" {
+            $backupFile = Join-Path $backupDir "Backup_4.03.txt"
+            if (Test-Path $backupFile) {
+                $previousValue = Get-Content -Path $backupFile
+                Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/requestLimits" -name "maxQueryString" -value $previousValue
+                Write-Log "Rolled back #4.03"
+            } else {
+                Write-Log "Backup file for #4.03 not found"
+            }
+        }
+
+        # Rollback per 04.04
+        "4.04" {
+            $backupFile = Join-Path $backupDir "Backup_4.04.txt"
+            if (Test-Path $backupFile) {
+                $previousValue = Get-Content -Path $backupFile
+                Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering" -name "allowHighBitCharacters" -value $previousValue
+                Write-Log "Rolled back #4.04"
+            } else {
+                Write-Log "Backup file for #4.04 not found"
+            }
+        }
+
+        # Rollback per 04.05
+        "4.05" {
+            $backupFile = Join-Path $backupDir "Backup_4.05.txt"
+            if (Test-Path $backupFile) {
+                $previousValue = Get-Content -Path $backupFile
+                Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering" -name "allowDoubleEscaping" -value $previousValue
+                Write-Log "Rolled back #4.05"
+            } else {
+                Write-Log "Backup file for #4.05 not found"
             }
         }
 
