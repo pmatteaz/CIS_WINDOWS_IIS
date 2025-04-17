@@ -82,7 +82,7 @@ $currentValue = Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST/' 
 $backupFile = "C:\Temp\Backup_2.05.txt"
 $currentValue | Out-File -FilePath $backupFile -Force
 
-if ($currentValue.Value -ne 'All') {
+if ($currentValue -ne 'All') {
     Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter 'system.web/authentication/forms' -name 'protection' -value 'All'
     Write-Log "#2.05 Hardened"
 } else {
@@ -102,7 +102,7 @@ $currentValue = Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST/' 
 $backupFile = "C:\Temp\Backup_3.06.txt"
 $currentValue | Out-File -FilePath $backupFile -Force
 
-if ($currentValue.Value -ne 'InProc') {
+if ($currentValue -ne 'InProc') {
     Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.web/sessionState" -name "mode" -value StateServer
     Write-Log "#3.06 Hardened"
 } else {
