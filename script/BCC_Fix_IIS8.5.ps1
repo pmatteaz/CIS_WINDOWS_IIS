@@ -1,3 +1,15 @@
+# Funzione per scrivere nel log con timestamp e separatori
+function Write-Log {
+    param (
+        [string]$Message
+    )
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    Write-Output "$timestamp - $Message" | Out-File -FilePath C:\Temp\Hardening.log -Append
+}
+
+# Get all site in IIS
+$sites = Get-IISSite | Where-Object { $_.Bindings.Protocol -ne 'ftp' } | Select-Object -ExpandProperty Name
+
 # 02.03
 foreach ($site in $sites) {
     Write-Log "Starting #2.03 for site: $site"
