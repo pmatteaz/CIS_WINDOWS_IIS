@@ -27,7 +27,7 @@ foreach ($site in $sites) {
     $backupFile = "C:\Temp\Backup_2.04_$site.txt"
     $currentValue | Out-File -FilePath $backupFile -Force
 
-    if ($currentValue.Value -ne 'UseCookies') {
+    if ($currentValue -ne 'InProc') {
         Set-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST/$site" -filter 'system.web/authentication/forms' -name 'cookieless' -value 'UseCookies'
         Write-Log "#2.04 Hardened for site: $site"
     } else {
@@ -46,7 +46,7 @@ $currentValue = Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -
 $backupFile = "C:\Temp\Backup_2.05.txt"
 $currentValue | Out-File -FilePath $backupFile -Force
 
-if ($currentValue.Value -ne 'All') {
+if ($currentValue -ne 'All') {
     Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter 'system.web/authentication/forms' -name 'protection' -value 'All'
     Write-Log "#2.05 Hardened"
 } else {
@@ -64,7 +64,7 @@ $currentValue = Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -
 $backupFile = "C:\Temp\Backup_3.06.txt"
 $currentValue | Out-File -FilePath $backupFile -Force
 
-if ($currentValue.Value -ne 'StateServer') {
+if ($currentValue -ne 'StateServer') {
     Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.web/sessionState" -name "mode" -value 'StateServer'
     Write-Log "#3.06 Hardened"
 } else {
@@ -73,27 +73,6 @@ if ($currentValue.Value -ne 'StateServer') {
 
 Write-Log "Finished #3.06"
 Write-Log "----------------------------------------"
-
-######################################################################################################################################################################
-# 03.11
-#######################################################################################################################################################################
-#Removing access to the iisWasKey can be done by using an aspnet_regiis.exe command. The syntax is as #follows, and is dependent on the version of .NET being used:
-
-#	%systemroot%\Microsoft.NET\Framework<bitness (if not the 32 bit)>\<framework version>\aspnet_regiis.exe -pr iisWasKey IIS_IUSRS 
-
-#	To remove read access to the IIS_IUSRS security group on a system using .NET Framework v2.0:
-
-#* Open an elevated command prompt
-#* Run the following aspnet_regiis.exe command:
-
-#	%systemroot%\Microsoft.NET\Framework\v2.0.50727\aspnet_regiis.exe -pr iisWasKey IIS_IUSRS 
-#
-#	If running a 64-bit system, also run the following:
-#
-#	%systemroot%\Microsoft.NET\Framework64\v2.0.50727\aspnet_regiis.exe -pr iisWasKey IIS_IUSRS 
-#
-#	Note: A unique version of aspnet_regiis.exe is included with each version of the .NET Framework. Since each version of the tool applies only to its associated version of the .NET Framework, be sure to use the appropriate version of the tool.
-##########################################################################################################################################################################
 
 # 04.01
 Write-Log "Starting #4.01"
