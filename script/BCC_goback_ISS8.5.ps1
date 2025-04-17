@@ -25,7 +25,7 @@ function Rollback-Activity {
     switch ($ActivityCode) {
         # Rollback per 02.03
         "2.03" {
-            $sites = Get-IISSite | Where-Object { $_.Bindings.Protocol -ne 'ftp' } | Select-Object -ExpandProperty Name
+            $sites = Get-Website | Where-Object { $_.Bindings.Collection.Protocol -notcontains "ftp" } | Select-Object -ExpandProperty Name
             foreach ($site in $sites) {
                 $backupFile = Join-Path $backupDir "Backup_2.03_$site.txt"
                 if (Test-Path $backupFile) {
@@ -40,7 +40,7 @@ function Rollback-Activity {
 
         # Rollback per 02.04
         "2.04" {
-            $sites = Get-IISSite | Where-Object { $_.Bindings.Protocol -ne 'ftp' } | Select-Object -ExpandProperty Name
+            $sites = Get-Website | Where-Object { $_.Bindings.Collection.Protocol -notcontains "ftp" } | Select-Object -ExpandProperty Name
             foreach ($site in $sites) {
                 $backupFile = Join-Path $backupDir "Backup_2.04_$site.txt"
                 if (Test-Path $backupFile) {
