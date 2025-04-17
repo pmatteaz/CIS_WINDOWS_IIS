@@ -39,7 +39,7 @@ foreach ($site in $sites) {
     $backupFile = "C:\Temp\Backup_2.04_$site.txt"
     $currentValue | Out-File -FilePath $backupFile -Force
 
-    if ($currentValue -ne 'InProc') {
+    if ($currentValue -ne 'UseCookies') {
         Set-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST/$site" -filter 'system.web/authentication/forms' -name 'cookieless' -value 'UseCookies'
         Write-Log "#2.04 Hardened for site: $site"
     } else {
