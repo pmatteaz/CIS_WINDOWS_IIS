@@ -8,7 +8,7 @@ function Write-Log {
 }
 
 # Get all site in IIS
-$sites = Get-IISSite | Where-Object { $_.Bindings.Protocol -ne 'ftp' } | Select-Object -ExpandProperty Name
+$sites = Get-Website | Where-Object { $_.Bindings.Collection.Protocol -notcontains "ftp" } | Select-Object -ExpandProperty Name
 
 # 02.03
 foreach ($site in $sites) {
