@@ -70,21 +70,39 @@ Write-Log "----------------------------------------"
 
 # 03.06
 Write-Log "Starting #3.06"
-$currentValue = Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.web/sessionState" -name "mode"
+Write-Output "#3.06  Ensure httpcookie mode is configured for session state"
+
+foreach ($site in $sites){ 
+$currentValue = Get-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST/$site" -filter "system.web/sessionState" -name "cookieless"
+Write-Output " Current Value"
+$currentValue
 
 # Salva il valore precedente in un file
 $backupFile = "C:\Temp\Backup_3.06.txt"
 $currentValue | Out-File -FilePath $backupFile -Force
 
-if ($currentValue -ne 'StateServer') {
-    Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.web/sessionState" -name "mode" -value 'StateServer'
+if ($currentValue -ne 'UseCookies') {
+    Set-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST/$site" -filter "system.web/sessionState" -name "cookieless" -value UseCookies
     Write-Log "#3.06 Hardened"
+    Write-Output "#3.06 Hardened"
 } else {
     Write-Log "#3.06 Already Hardened"
+    Write-Output "#3.06 Already Hardened"
 }
 
-Write-Log "Finished #3.06"
+Get-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST/$site" -filter "system.web/sessionState" -name "cookieless" | Out-File -FilePath C:\Temp\Hardening.log -Append
+Write-Log "Finished #3.06 for site: $site"
 Write-Log "----------------------------------------"
+
+Write-Output "New Value"
+Get-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST/$site" -filter "system.web/sessionState" -name "cookieless"
+
+Write-Output "Finished #3.06 for site: $site"
+Write-Output "----------------------------------------"
+}
+
+Write-Output "Next #03.12 Ensure Server Header is removed"
+
 
 # 04.01
 Write-Log "Starting #4.01"
