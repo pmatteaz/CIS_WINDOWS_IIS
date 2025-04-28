@@ -22,17 +22,22 @@ foreach ($site in $sites) {
     if ($currentValue.Value -ne 'True') {
         Set-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST/$site" -filter 'system.web/authentication/forms' -name 'requireSSL' -value 'True'
         Write-Log "#2.03 Hardened for site: $site"
+        Write-Output "#2.03 Hardened for site: $site"
     } else {
         Write-Log "#2.03 Already Hardened for site: $site"
+        Write-Output "#2.03 Already Hardened for site: $site"
     }
 
     Write-Log "Finished #2.03 for site: $site"
     Write-Log "----------------------------------------"
+    Write-Output "Finished #2.03 for site: $site"
+    Write-Output "----------------------------------------"
 }
 
 # 02.04
 foreach ($site in $sites) {
     Write-Log "Starting #2.04 for site: $site"
+    Write-Output "Starting #2.04 for site: $site"
     $currentValue = Get-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST/$site" -filter 'system.web/authentication/forms' -name 'cookieless'
 
     # Salva il valore precedente in un file
