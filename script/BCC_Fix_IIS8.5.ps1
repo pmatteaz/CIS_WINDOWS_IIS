@@ -68,45 +68,13 @@ if ($currentValue -ne 'All') {
 Write-Log "Finished #2.05"
 Write-Log "----------------------------------------"
 
-# 03.06
-Write-Log "Starting #3.06"
-Write-Output "#3.06  Ensure httpcookie mode is configured for session state"
-
-foreach ($site in $sites){ 
-$currentValue = Get-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST/$site" -filter "system.web/sessionState" -name "cookieless"
-Write-Output " Current Value"
-$currentValue
-
-# Salva il valore precedente in un file
-$backupFile = "C:\Temp\Backup_3.06.txt"
-$currentValue | Out-File -FilePath $backupFile -Force
-
-if ($currentValue -ne 'UseCookies') {
-    Set-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST/$site" -filter "system.web/sessionState" -name "cookieless" -value UseCookies
-    Write-Log "#3.06 Hardened"
-    Write-Output "#3.06 Hardened"
-} else {
-    Write-Log "#3.06 Already Hardened"
-    Write-Output "#3.06 Already Hardened"
-}
-
-Get-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST/$site" -filter "system.web/sessionState" -name "cookieless" | Out-File -FilePath C:\Temp\Hardening.log -Append
-Write-Log "Finished #3.06 for site: $site"
-Write-Log "----------------------------------------"
-
-Write-Output "New Value"
-Get-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST/$site" -filter "system.web/sessionState" -name "cookieless"
-
-Write-Output "Finished #3.06 for site: $site"
-Write-Output "----------------------------------------"
-}
-
-Write-Output "Next #03.12 Ensure Server Header is removed"
-
-
 # 04.01
 Write-Log "Starting #4.01"
+Write-Output "#4.01 Ensure maxAllowedContentLength is configured"
 $currentValue = Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/requestLimits" -name "maxAllowedContentLength"
+
+Write-Output "Current Value:"
+Write-Output $currentValue
 
 # Salva il valore precedente in un file
 $backupFile = "C:\Temp\Backup_4.01.txt"
@@ -115,16 +83,28 @@ $currentValue | Out-File -FilePath $backupFile -Force
 if ($currentValue.Value -ne 30000000) {
     Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/requestLimits" -name "maxAllowedContentLength" -value 30000000
     Write-Log "#4.01 Hardened"
+    Write-Output "#4.01 Hardened"
 } else {
     Write-Log "#4.01 Already Hardened"
+    Write-Output "#4.01 Already Hardened"
 }
+
+Write-Output "New Value:"
+Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/requestLimits" -name "maxAllowedContentLength"
 
 Write-Log "Finished #4.01"
 Write-Log "----------------------------------------"
+Write-Output "Finished #4.01"
+Write-Output "----------------------------------------"
+Write-Output "Next #4.02 Ensure maxUrl is configured"
 
 # 04.02
 Write-Log "Starting #4.02"
+Write-Output "#4.02 Ensure maxUrl is configured"
 $currentValue = Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/requestLimits" -name "maxUrl"
+
+Write-Output "Current Value:"
+Write-Output $currentValue
 
 # Salva il valore precedente in un file
 $backupFile = "C:\Temp\Backup_4.02.txt"
@@ -133,16 +113,27 @@ $currentValue | Out-File -FilePath $backupFile -Force
 if ($currentValue.Value -ne 4096) {
     Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/requestLimits" -name "maxUrl" -value 4096
     Write-Log "#4.02 Hardened"
+    Write-Output "#4.02 Hardened"
 } else {
     Write-Log "#4.02 Already Hardened"
+    Write-Output "#4.02 Already Hardened"
 }
+
+Write-Output "New Value:"
+Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/requestLimits" -name "maxUrl"
 
 Write-Log "Finished #4.02"
 Write-Log "----------------------------------------"
+Write-Output "Finished #4.02"
+Write-Output "----------------------------------------"
 
 # 04.03
 Write-Log "Starting #4.03"
+Write-Output "#4.03 Ensure maxQueryString is configured"
 $currentValue = Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/requestLimits" -name "maxQueryString"
+
+Write-Output "Current Value:"
+Write-Output $currentValue
 
 # Salva il valore precedente in un file
 $backupFile = "C:\Temp\Backup_4.03.txt"
@@ -151,16 +142,27 @@ $currentValue | Out-File -FilePath $backupFile -Force
 if ($currentValue.Value -ne 2048) {
     Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/requestLimits" -name "maxQueryString" -value 2048
     Write-Log "#4.03 Hardened"
+    Write-Output "#4.03 Hardened"
 } else {
     Write-Log "#4.03 Already Hardened"
+    Write-Output "#4.03 Already Hardened"
 }
+
+Write-Output "New Value:"
+Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering/requestLimits" -name "maxQueryString"
 
 Write-Log "Finished #4.03"
 Write-Log "----------------------------------------"
+Write-Output "Finished #4.03"
+Write-Output "----------------------------------------"
 
 # 04.04
 Write-Log "Starting #4.04"
+Write-Output "#4.04 Ensure allowHighBitCharacters is configured"
 $currentValue = Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering" -name "allowHighBitCharacters"
+
+Write-Output "Current Value:"
+Write-Output $currentValue
 
 # Salva il valore precedente in un file
 $backupFile = "C:\Temp\Backup_4.04.txt"
@@ -169,12 +171,19 @@ $currentValue | Out-File -FilePath $backupFile -Force
 if ($currentValue.Value -ne $false) {
     Set-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering" -name "allowHighBitCharacters" -value $false
     Write-Log "#4.04 Hardened"
+    Write-Output "#4.04 Hardened"
 } else {
     Write-Log "#4.04 Already Hardened"
+    Write-Output "#4.04 Already Hardened"
 }
+
+Write-Output "New Value:"
+Get-WebConfigurationProperty -pspath 'MACHINE/WEBROOT/APPHOST' -filter "system.webServer/security/requestFiltering" -name "allowHighBitCharacters"
 
 Write-Log "Finished #4.04"
 Write-Log "----------------------------------------"
+Write-Output "Finished #4.04"
+Write-Output "----------------------------------------"
 
 # 04.05
 Write-Log "Starting #4.05"
