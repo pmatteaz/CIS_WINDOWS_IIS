@@ -10,10 +10,11 @@ function Write-Log {
 }
 
 # Backup della configurazione IIS
-Write-Output "Backup della configurazione IIS"
+Write-Log "Backup della configurazione IIS"
 Backup-WebConfiguration -Name "Backup-pre-hardening"
-Write-Output "Backup presenti"
-Get-WebConfigurationBackup
+$result = Get-WebConfiguration -Name "Backup-pre-hardening" | Format-Table -AutoSize
+Write-Log "Backup presenti $result"
+
 
 Write-Log "Next # 01.07 Ensure WebDav feature is disabled"
 
