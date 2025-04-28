@@ -205,11 +205,16 @@ Write-Log "----------------------------------------"
 
 # 07.05
 Write-Log "Starting #7.05"
+Write-Output "#7.05 Ensure TLS 1.1 is disabled for Server and Client"
 
 # Salva i valori precedenti per TLS 1.1 Server
 $backupFileServer = "C:\Temp\Backup_7.05_Server.txt"
 $currentValueServerEnabled = Get-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server' -Name 'Enabled' -ErrorAction SilentlyContinue
 $currentValueServerDisabledByDefault = Get-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server' -Name 'DisabledByDefault' -ErrorAction SilentlyContinue
+
+Write-Output "Current Server Values:"
+Write-Output "Enabled: $($currentValueServerEnabled.Enabled)"
+Write-Output "DisabledByDefault: $($currentValueServerDisabledByDefault.DisabledByDefault)"
 
 @{
     Enabled = $currentValueServerEnabled.Enabled
@@ -222,14 +227,20 @@ if ($currentValueServerEnabled.Enabled -ne 0 -or $currentValueServerDisabledByDe
     New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server' -Name 'Enabled' -Value 0 -PropertyType 'DWord' -Force | Out-Null
     New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server' -Name 'DisabledByDefault' -Value 1 -PropertyType 'DWord' -Force | Out-Null
     Write-Log "#7.05 Hardened (Server)"
+    Write-Output "#7.05 Hardened (Server)"
 } else {
     Write-Log "#7.05 Already Hardened (Server)"
+    Write-Output "#7.05 Already Hardened (Server)"
 }
 
 # Salva i valori precedenti per TLS 1.1 Client
 $backupFileClient = "C:\Temp\Backup_7.05_Client.txt"
 $currentValueClientEnabled = Get-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client' -Name 'Enabled' -ErrorAction SilentlyContinue
 $currentValueClientDisabledByDefault = Get-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client' -Name 'DisabledByDefault' -ErrorAction SilentlyContinue
+
+Write-Output "Current Client Values:"
+Write-Output "Enabled: $($currentValueClientEnabled.Enabled)"
+Write-Output "DisabledByDefault: $($currentValueClientDisabledByDefault.DisabledByDefault)"
 
 @{
     Enabled = $currentValueClientEnabled.Enabled
@@ -242,19 +253,28 @@ if ($currentValueClientEnabled.Enabled -ne 0 -or $currentValueClientDisabledByDe
     New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client' -Name 'Enabled' -Value 0 -PropertyType 'DWord' -Force | Out-Null
     New-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Client' -Name 'DisabledByDefault' -Value 1 -PropertyType 'DWord' -Force | Out-Null
     Write-Log "#7.05 Hardened (Client)"
+    Write-Output "#7.05 Hardened (Client)"
 } else {
     Write-Log "#7.05 Already Hardened (Client)"
+    Write-Output "#7.05 Already Hardened (Client)"
 }
 
 Write-Log "Finished #7.05"
 Write-Log "----------------------------------------"
+Write-Output "Finished #7.05"
+Write-Output "----------------------------------------"
 
 # 07.12
 Write-Log "Starting #7.12"
+Write-Output "#7.12 Ensure SSL cipher suite order is configured"
 
 # Salva il valore precedente per le funzioni SSL
 $backupFile = "C:\Temp\Backup_7.12.txt"
 $currentValue = Get-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Cryptography\Configuration\SSL\00010002' -Name 'Functions' -ErrorAction SilentlyContinue
+
+Write-Output "Current SSL Functions:"
+Write-Output $currentValue.Functions
+
 $currentValue.Functions | Out-File -FilePath $backupFile -Force
 
 # Verifica e applica le modifiche per le funzioni SSL
@@ -264,12 +284,16 @@ if ($null -eq $currentValue.Functions -or $currentValue.Functions -ne $desiredVa
     New-Item 'HKLM:\SOFTWARE\Policies\Microsoft\Cryptography\Configuration\SSL\00010002' -Force | Out-Null
     New-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Cryptography\Configuration\SSL\00010002' -Name 'Functions' -Value $desiredValue -PropertyType 'MultiString' -Force | Out-Null
     Write-Log "#7.12 Hardened"
+    Write-Output "#7.12 Hardened"
 } else {
     Write-Log "#7.12 Already Hardened"
+    Write-Output "#7.12 Already Hardened"
 }
 
 Write-Log "Finished #7.12"
 Write-Log "----------------------------------------"
+Write-Output "Finished #7.12"
+Write-Output "----------------------------------------"
 
 
 
