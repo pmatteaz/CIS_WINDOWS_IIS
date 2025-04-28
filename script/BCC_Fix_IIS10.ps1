@@ -4,7 +4,9 @@ function Write-Log {
         [string]$Message
     )
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    Write-Output "$timestamp - $Message" | Out-File -FilePath C:\Temp\Hardening.log -Append
+    $logMessage = "$timestamp - $Message"
+    Write-Output $logMessage
+    $logMessage | Out-File -FilePath C:\Temp\Hardening.log -Append
 }
 
 # Backup della configurazione IIS
@@ -58,7 +60,6 @@ Write-Output "#02.03  Ensure forms authentication require SSL"
 
 foreach ($site in $sites) {
     Write-Log "Starting #2.03 for site: $site"
-    Write-Output "Starting #2.03 for site: $site"
     $currentValue = Get-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST/$site" -filter 'system.web/authentication/forms' -name 'requireSSL'
 
     # Salva il valore precedente in un file
@@ -72,12 +73,9 @@ foreach ($site in $sites) {
     if ($currentValue.Value -ne 'True') {
         Set-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST/$site" -filter 'system.web/authentication/forms' -name 'requireSSL' -value 'True'
         Write-Log "#2.03 Hardened for site: $site"
-	Write-Output"#2.03 Hardened for site: $site"
     } else {
         Write-Log "#2.03 Already Hardened for site: $site"
-        Write-Output "#2.03 Already Hardened for site: $site"
     }
-
     Get-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST/$site" -filter 'system.web/authentication/forms' -name 'requireSSL' | Format-Table -AutoSize | Out-File -FilePath C:\Temp\Hardening.log -Append
 
 Write-Output "New Value"
@@ -192,11 +190,6 @@ Get-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST/$site" -filter "sy
 Write-Log "Finished #3.06 for site: $site"
 Write-Log "----------------------------------------"
 
-Write-Output "New Value"
-Get-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST/$site" -filter "system.web/sessionState" -name "cookieless"
-
-Write-Output "Finished #3.06 for site: $site"
-Write-Output "----------------------------------------"
 }
 
 Write-Output "Next #03.12 Ensure Server Header is removed"
