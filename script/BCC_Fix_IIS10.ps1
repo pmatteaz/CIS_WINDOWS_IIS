@@ -116,7 +116,7 @@ foreach ($site in $sites) {
     Write-Log "New value : $result"
     Get-WebConfigurationProperty -pspath "MACHINE/WEBROOT/APPHOST/$site" -filter 'system.web/authentication/forms' -name 'cookieless'
     Write-Log "Finished #2.04 for site: $site"
-    Write-Log "----------------------------------------
+    Write-Log "----------------------------------------"
 }
 
 Write-Log "Next #2.05 Ensure 'cookie protection mode' is configured for forms authentication"
@@ -454,4 +454,3 @@ if ($null -eq $currentValue.Functions -or $currentValue.Functions -ne 'TLS_ECDHE
 # Controllo per TLS 1.0 e 1.1
 Write-Log "Finished #7.12"
 Write-Log "----------------------------------------"
-# 07.12  - Fine 
